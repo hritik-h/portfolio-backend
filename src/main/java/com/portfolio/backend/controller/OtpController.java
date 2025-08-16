@@ -20,7 +20,7 @@ public class OtpController {
     @Autowired
     private  OtpService otpService;
 
-    @CrossOrigin(origins = "http://192.168.1.10:4200")
+    @CrossOrigin(origins = "https://iamhritik.vercel.app")
     @PostMapping("/send-otp")
     public ResponseEntity<String> sendOtp(@RequestParam String email) {
 

@@ -24,7 +24,7 @@ public class ResumeController {
     }
 
 
-    @CrossOrigin(origins = "http://192.168.1.10:4200")
+    @CrossOrigin(origins = "https://iamhritik.vercel.app")
     @GetMapping("/download")
     public ResponseEntity<?> downloadResume(@RequestParam String email, @RequestParam String otp) {
         if (otpService.verifyOtp(email, otp)) {
