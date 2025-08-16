@@ -2,6 +2,7 @@ package com.portfolio.backend.controller;
 
 import com.portfolio.backend.service.OtpService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,10 +27,11 @@ public class ResumeController {
 
     @CrossOrigin(origins = "https://iamhritik.vercel.app")
     @GetMapping("/download")
-    public ResponseEntity<?> downloadResume(@RequestParam String email, @RequestParam String otp) {
+    public ResponseEntity<?> downloadResume(@RequestParam String email, @RequestParam String otp) throws IOException {
         if (otpService.verifyOtp(email, otp)) {
             // Path to your resume
-            File resumeFile = new File("src/main/resources/static/Hritik_Resume.pdf");
+            ClassPathResource resource = new ClassPathResource("static/Hritik_Resume.pdf");
+            File resumeFile = resource.getFile();
             if (!resumeFile.exists()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resume not found");
             }
