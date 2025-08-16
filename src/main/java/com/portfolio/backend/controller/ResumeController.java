@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 
 @RestController
@@ -27,17 +28,13 @@ public class ResumeController {
 
     @CrossOrigin(origins = "https://iamhritik.vercel.app")
     @GetMapping("/download")
-    public ResponseEntity<?> downloadResume(@RequestParam String email, @RequestParam String otp) throws IOException {
+    public ResponseEntity<?> downloadResume(@RequestParam String email, @RequestParam String otp) {
         if (otpService.verifyOtp(email, otp)) {
-            // Path to your resume
-            ClassPathResource resource = new ClassPathResource("static/Hritik_Resume.pdf");
-            File resumeFile = resource.getFile();
-            if (!resumeFile.exists()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resume not found");
-            }
-
             try {
-                byte[] resumeBytes = Files.readAllBytes(resumeFile.toPath());
+                // Load file from classpath inside JAR
+                ClassPathResource resource = new ClassPathResource("static/Hritik_Resume.pdf");
+                InputStream inputStream = resource.getInputStream();
+                byte[] resumeBytes = inputStream.readAllBytes();
 
                 return ResponseEntity.ok()
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Hrithik_Resume.pdf")
